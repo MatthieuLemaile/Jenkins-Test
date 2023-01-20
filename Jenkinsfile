@@ -17,11 +17,11 @@ node {
     }
     
     stage('Build Docker Image') {
-      sh "docker -H unix:///run/containerd/containerd.sock build -t devopsexample:${env.BUILD_NUMBER} ."
+      sh "docker -H tcp://0.0.0.0:4243 build -t devopsexample:${env.BUILD_NUMBER} ."
     }
     
     stage('Deploy Docker Image'){
       	echo "Docker Image Tag Name: ${dockerImageTag}"
-	sh "docker -H unix:///run/containerd/containerd.sock run --name devopsexample -d -p 2222:2222 devopsexample:${env.BUILD_NUMBER}"
+	sh "docker -H tcp://0.0.0.0:4243 run --name devopsexample -d -p 2222:2222 devopsexample:${env.BUILD_NUMBER}"
     }
 }
